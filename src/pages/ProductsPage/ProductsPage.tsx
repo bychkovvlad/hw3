@@ -96,7 +96,7 @@ export const ProductsPage: React.FC = () => {
       >
         {products.slice(0, selectedPage * 6).map((product) => (
           <Link
-            to={`/product-${product.id}`}
+            to={`/product/${product.id}`}
             key={product.id}
             className={styles.linkWrapper}
           >

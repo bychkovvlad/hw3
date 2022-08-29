@@ -33,7 +33,6 @@ export const Button: React.FC<ButtonProps> = ({
           { button_disabled: loading || disabled },
           className
         )}
-        color={`${color}`}
         disabled={loading || disabled}
         {...props}
       >

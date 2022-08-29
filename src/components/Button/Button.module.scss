@@ -1,3 +1,5 @@
+@import '../../styles/mixins.scss';
+@import '../../styles/colors.scss';
 .button {
     width: 138px;
     height: 54px;
@@ -7,11 +9,10 @@
 }
 
 .button_color-primary {
-    background: #518581;
+    background: $base-green;
 }
 
 .button_color-secondary {
-    // background: #518581;
     opacity: 0.7;
 }
 
@@ -24,16 +25,12 @@
 
 .loader_button {
     transform: rotate(125deg);
-    color: #FFFFFF;
+    color: $base-white;
 }
 
 .button_children {
-    color: #FFFFFF;
-    font-family: 'Eudoxus Sans';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 130%;
+    @include typo-text-regular-2;
+    color: $base-white;
     margin-left: auto;
     margin-right: auto;
 }

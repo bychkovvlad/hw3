@@ -50,7 +50,7 @@ export const SingleDropdown: React.FC<SingleDropdownProps> = ({
           src={"../images/filter.svg"}
           alt="filterIcon"
         />
-        {selected || "Filter"}
+        <span className={styles.filterName}>{selected || "Filter"}</span>
       </div>
       {isOpen && (
         <div className={styles.options_wrapper}>

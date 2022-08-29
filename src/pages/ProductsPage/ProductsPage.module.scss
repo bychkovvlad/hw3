@@ -1,3 +1,5 @@
+@import '../../styles/mixins.scss';
+@import '../../styles/colors.scss';
 .titleWrapper {
     display: flex;
     align-items: center;
@@ -6,18 +8,14 @@
 }
 
 .title {
-    color: #151411;
-    font-family: 'Eudoxus Sans';
-    font-size: 64px;
-    font-weight: 700;
+    @include typo-header;
+    color: $base-black;
     margin-bottom: 20px;
 }
 
 .description {
-    color: #AFADB5;
-    font-family: 'Eudoxus Sans';
-    font-weight: 500;
-    font-size: 18px;
+    @include typo-text-regular-1;
+    color: $base-gray;
     text-align: center;
 }
 
@@ -44,9 +42,7 @@
 }
 
 .subtitle {
-    font-family: 'Eudoxus Sans';
-    font-size: 44px;
-    font-weight: 700;
+    @include typo-sub-header;
 }
 
 .badge {

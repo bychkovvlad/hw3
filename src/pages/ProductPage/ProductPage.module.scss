@@ -1,3 +1,5 @@
+@import '../../styles/mixins.scss';
+@import '../../styles/colors.scss';
 .wrapper {
     margin-top: 100px;
     display: flex;
@@ -12,22 +14,14 @@
 }
 
 .title {
-    font-family: 'Eudoxus Sans';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 44px;
-    line-height: 130%;
+    @include typo-sub-header;
     margin-top: 32px;
     margin-bottom: 10px;
 }
 
 .category {
-    font-family: 'Eudoxus Sans';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 180%;
-    color: #AFADB5;
+    @include typo-text-regular-1;
+    color: $base-gray;
     margin-bottom: 30px;
 }
 
@@ -36,12 +30,8 @@
 }
 
 .description {
-    font-family: 'Eudoxus Sans';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 180%;
-    color: #AFADB5;
+    @include typo-text-regular-1;
+    color: $base-gray;
     margin-bottom: 30px;
     -webkit-line-clamp: 3;
     display: -webkit-box;
@@ -50,11 +40,7 @@
 }
 
 .price {
-    font-family: 'Eudoxus Sans';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 44px;
-    line-height: 130%;
+    @include typo-sub-header;
 }
 
 .buttonsWrapper {
@@ -74,5 +60,5 @@
 }
 
 .addToChartButton>div {
-    color: #151411;
+    color: $base-black;
 }

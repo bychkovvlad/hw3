@@ -20,7 +20,7 @@ export const Card: React.FC<CardProps> = ({
   return (
     <div className={styles.card_block} onClick={onClick}>
       <div>
-        <img src={`${image}`} className={styles.card_image} alt={title} />
+        <img src={image} className={styles.card_image} alt={title} />
       </div>
       <div className={styles.category}>{category}</div>
       <div className={styles.card_title}>{title}</div>
