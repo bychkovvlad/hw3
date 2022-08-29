@@ -1,0 +1,51 @@
+.card_block {
+    width: 394px;
+}
+
+.card_image {
+    width: 394px;
+    height: 360px;
+    margin-bottom: 26px;
+}
+
+.category {
+    font-family: 'Eudoxus Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 130%;
+    color: #AFADB5;
+    margin-bottom: 14px;
+}
+
+.card_title {
+    width: 346px;
+    color: #151411;
+    font-family: 'Eudoxus Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 130%;
+    margin-bottom: 18px;
+    -webkit-line-clamp: 1;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card_subtitle {
+    font-family: 'Eudoxus Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 180%;
+    color: #AFADB5;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card_content {
+    margin-top: 18px;
+}

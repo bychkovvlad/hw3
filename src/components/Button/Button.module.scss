@@ -1,0 +1,39 @@
+.button {
+    width: 138px;
+    height: 54px;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.button_color-primary {
+    background: #518581;
+}
+
+.button_color-secondary {
+    // background: #518581;
+    opacity: 0.7;
+}
+
+.button_disabled {
+    background: #D9D9D9;
+    width: 156px;
+    height: 54px;
+    display: flex;
+}
+
+.loader_button {
+    transform: rotate(125deg);
+    color: #FFFFFF;
+}
+
+.button_children {
+    color: #FFFFFF;
+    font-family: 'Eudoxus Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 130%;
+    margin-left: auto;
+    margin-right: auto;
+}
