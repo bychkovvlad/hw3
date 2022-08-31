@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useCallback } from "react";
 
 import styles from "./SingleDropdown.module.scss";
 
@@ -26,25 +27,27 @@ export const SingleDropdown: React.FC<SingleDropdownProps> = ({
     setSelected(value);
   }, [value]);
 
-  const handleClickOption = (option: string) => {
-    if (option === selected) {
-      onOptionClick(undefined);
-      setSelected(undefined);
-    } else {
-      onOptionClick(option);
-      setSelected(option);
-    }
-    setIsOpen(false);
-  };
+  const handleOptionClick = useCallback(
+    (option: string) => {
+      if (option === selected) {
+        onOptionClick(undefined);
+        setSelected(undefined);
+      } else {
+        onOptionClick(option);
+        setSelected(option);
+      }
+      setIsOpen(false);
+    },
+    [onOptionClick, selected]
+  );
+
+  const handleDropdownClick = useCallback(() => {
+    setIsOpen((prev) => !prev);
+  }, []);
 
   return (
     <div className={className}>
-      <div
-        className={styles.dropdown_wrapper}
-        onClick={() => {
-          setIsOpen(!isOpen);
-        }}
-      >
+      <div className={styles.dropdown_wrapper} onClick={handleDropdownClick}>
         <img
           className={styles.filterIcon}
           src={"../images/filter.svg"}
@@ -58,7 +61,7 @@ export const SingleDropdown: React.FC<SingleDropdownProps> = ({
             return (
               <span
                 className={styles.dropdown_option_wrapper}
-                onClick={() => handleClickOption(option)}
+                onClick={() => handleOptionClick(option)}
               >
                 {option}
               </span>

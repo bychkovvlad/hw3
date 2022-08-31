@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 
 import classNames from "classnames";
 
@@ -20,12 +20,17 @@ export const Input: React.FC<InputProps> = ({
   disabled,
   ...props
 }) => {
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChange(event.target.value);
+    },
+    [onChange]
+  );
+
   return (
     <input
       value={value}
-      onChange={(el) => {
-        onChange(el.target.value);
-      }}
+      onChange={handleChange}
       className={classNames(className, styles.input_form, {
         input_disabled: disabled,
       })}

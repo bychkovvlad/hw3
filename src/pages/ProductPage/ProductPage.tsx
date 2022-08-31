@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Button, ButtonColor } from "@components/Button";
+import { API_ROUTES } from "@config/apiRoutes";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
@@ -24,11 +25,9 @@ export const ProductPage: React.FC = () => {
   const params = useParams();
 
   useEffect(() => {
-    axios
-      .get(`https://fakestoreapi.com/products/${params.id}`)
-      .then((result) => {
-        setProduct(result.data);
-      });
+    axios.get(API_ROUTES.GET_PRODUCT(params.id)).then((result) => {
+      setProduct(result.data);
+    });
   }, [params.id]);
 
   return (

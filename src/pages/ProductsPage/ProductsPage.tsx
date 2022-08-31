@@ -4,6 +4,8 @@ import { Card } from "@components/Card";
 import { Input } from "@components/Input";
 import { Price } from "@components/Price";
 import { SingleDropdown } from "@components/SingleDropdown";
+import { API_ROUTES } from "@config/apiRoutes";
+import { createProductPath } from "@config/routes";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
@@ -30,33 +32,31 @@ export const ProductsPage: React.FC = () => {
   const [selectedPage, setSelectedPage] = useState(1);
 
   useEffect(() => {
-    axios.get("https://fakestoreapi.com/products").then((result) => {
-      setProducts(result.data);
+    Promise.all([
+      axios.get(API_ROUTES.GET_PRODUCTS),
+      axios.get(API_ROUTES.GET_CATEGORIES),
+    ]).then(([products, categories]) => {
+      setProducts(products.data);
+      setCategories(categories.data);
     });
   }, []);
 
   useEffect(() => {
     if (selectedCategory) {
       axios
-        .get(`https://fakestoreapi.com/products/category/${selectedCategory}`)
+        .get(API_ROUTES.GET_PRODUCT_FROM_CATEGORY(selectedCategory))
         .then((result) => {
           setProducts(result.data);
         });
     }
   }, [selectedCategory]);
 
-  useEffect(() => {
-    if (categories.length === 0) {
-      axios
-        .get("https://fakestoreapi.com/products/categories")
-        .then((result) => {
-          setCategories(result.data);
-        });
-    }
-  }, [categories.length]);
-
   const handleCategoryClick = useCallback((category: string | undefined) => {
     setSelectedCategory(category);
+  }, []);
+
+  const handleNextProductLoad = useCallback(() => {
+    setSelectedPage((prev) => ++prev);
   }, []);
 
   return (
@@ -87,16 +87,14 @@ export const ProductsPage: React.FC = () => {
       </div>
       <InfiniteScroll
         dataLength={products.length}
-        next={() => {
-          setSelectedPage((prev) => ++prev);
-        }}
+        next={handleNextProductLoad}
         hasMore={true}
         loader={<div>Loading...</div>}
         className={styles.productWrapper}
       >
         {products.slice(0, selectedPage * 6).map((product) => (
           <Link
-            to={`/product/${product.id}`}
+            to={createProductPath(product.id)}
             key={product.id}
             className={styles.linkWrapper}
           >
