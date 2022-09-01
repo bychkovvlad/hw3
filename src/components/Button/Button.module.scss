@@ -1,0 +1,36 @@
+@import '../../styles/mixins.scss';
+@import '../../styles/colors.scss';
+.button {
+    width: 138px;
+    height: 54px;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.button_color-primary {
+    background: $base-green;
+}
+
+.button_color-secondary {
+    opacity: 0.7;
+}
+
+.button_disabled {
+    background: #D9D9D9;
+    width: 156px;
+    height: 54px;
+    display: flex;
+}
+
+.loader_button {
+    transform: rotate(125deg);
+    color: $base-white;
+}
+
+.button_children {
+    @include typo-text-regular-2;
+    color: $base-white;
+    margin-left: auto;
+    margin-right: auto;
+}

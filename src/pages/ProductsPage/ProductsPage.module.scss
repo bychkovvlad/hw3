@@ -1,0 +1,64 @@
+@import '../../styles/mixins.scss';
+@import '../../styles/colors.scss';
+.titleWrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 100px;
+}
+
+.title {
+    @include typo-header;
+    color: $base-black;
+    margin-bottom: 20px;
+}
+
+.description {
+    @include typo-text-regular-1;
+    color: $base-gray;
+    text-align: center;
+}
+
+.searchWrapper {
+    margin-top: 80px;
+    margin-bottom: 50px;
+    display: flex;
+}
+
+.inputSearch {
+    width: 100%;
+    margin-right: 30px;
+    box-shadow: 0px 4px 120px rgba(175, 173, 181, 0.15);
+}
+
+.singleDropdown {
+    box-shadow: 0px 4px 120px rgba(175, 173, 181, 0.15);
+}
+
+.subtitleWrapper {
+    margin-bottom: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.subtitle {
+    @include typo-sub-header;
+}
+
+.badge {
+    color: #518581;
+    padding: 4px 16px;
+    background: #F9F9F9;
+    border-radius: 20px;
+    margin-left: 10px;
+}
+
+.productWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.linkWrapper {
+    margin-top: 30px;
+}

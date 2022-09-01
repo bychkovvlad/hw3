@@ -1,0 +1,19 @@
+@import '../../styles/mixins.scss';
+@import '../../styles/colors.scss';
+.input_form {
+    @include typo-text-regular-1;
+    background: $base-white;
+    border: none;
+    height: 84px;
+    background: url(../../../public/images/search.svg) no-repeat scroll 24px 24px;
+    padding-left: 70px;
+}
+
+.input_form:hover {
+    border: 1px solid #518581;
+}
+
+.input_form[disabled] {
+    color: $base-gray;
+    border: none;
+}

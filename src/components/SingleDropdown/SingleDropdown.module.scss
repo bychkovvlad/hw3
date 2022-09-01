@@ -1,0 +1,44 @@
+@import '../../styles/mixins.scss';
+@import '../../styles/colors.scss';
+.dropdown_form {
+    width: 190px;
+}
+
+.filterName {
+    @include typo-text-regular-1;
+}
+
+.options_wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 190px;
+    margin-top: 10px;
+    color: $base-black;
+}
+
+.dropdown_wrapper {
+    @include typo-text-regular-1;
+    width: 190px;
+    height: 84px;
+    color: $base-black;
+    text-align: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdown_wrapper:hover {
+    border: 1px solid $base-green;
+}
+
+.filterIcon {
+    margin-right: 8px;
+}
+
+.dropdown_option_wrapper {
+    cursor: pointer;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

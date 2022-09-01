@@ -1,0 +1,64 @@
+@import '../../styles/mixins.scss';
+@import '../../styles/colors.scss';
+.wrapper {
+    margin-top: 100px;
+    display: flex;
+}
+
+.image {
+    min-width: 600px;
+    min-height: 600px;
+    max-width: 600px;
+    max-height: 600px;
+    margin-right: 50px;
+}
+
+.title {
+    @include typo-sub-header;
+    margin-top: 32px;
+    margin-bottom: 10px;
+}
+
+.category {
+    @include typo-text-regular-1;
+    color: $base-gray;
+    margin-bottom: 30px;
+}
+
+.color {
+    margin-bottom: 20px;
+}
+
+.description {
+    @include typo-text-regular-1;
+    color: $base-gray;
+    margin-bottom: 30px;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.price {
+    @include typo-sub-header;
+}
+
+.buttonsWrapper {
+    margin-top: 50px;
+    display: flex;
+}
+
+.buyButton {
+    width: 285px;
+    margin-right: 20px;
+}
+
+.addToChartButton {
+    width: 285px;
+    border: 2px solid #F3F3F3;
+    background: none;
+}
+
+.addToChartButton>div {
+    color: $base-black;
+}
