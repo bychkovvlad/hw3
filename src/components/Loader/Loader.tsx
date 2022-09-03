@@ -2,9 +2,8 @@ import React from "react";
 
 import classnames from "classnames";
 
+import styles from "./Loader.module.scss";
 import { ReactComponent as ReactLogo } from "./Loader.svg";
-
-import "./Loader.module.scss";
 
 export type LoaderProps = {
   loading?: boolean;
@@ -28,7 +27,9 @@ export const Loader: React.FC<LoaderProps> = ({
   }
 
   return (
-    <div className={classnames(`loader_size-${size}`, className, "loader")}>
+    <div
+      className={classnames(`loader_size-${size}`, className, styles.loader)}
+    >
       <ReactLogo />
     </div>
   );

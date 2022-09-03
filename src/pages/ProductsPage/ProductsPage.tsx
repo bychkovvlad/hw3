@@ -1,59 +1,64 @@
 import React, { useCallback, useEffect, useState } from "react";
 
+import { Button } from "@components/Button";
 import { Card } from "@components/Card";
 import { Input } from "@components/Input";
+import { Loader } from "@components/Loader";
+import { LoaderSize } from "@components/Loader/Loader";
 import { Price } from "@components/Price";
 import { SingleDropdown } from "@components/SingleDropdown";
-import { API_ROUTES } from "@config/apiRoutes";
 import { createProductPath } from "@config/routes";
-import axios from "axios";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { Link } from "react-router-dom";
+import { ProductsStore } from "@stores/ProductsStore";
+import { Meta } from "@utils/meta";
+import { observer, useLocalStore } from "mobx-react-lite";
+// import InfiniteScroll from "react-infinite-scroll-component";
+import {
+  Link,
+  useNavigate,
+  createSearchParams,
+  useSearchParams,
+} from "react-router-dom";
 
 import styles from "./ProductsPage.module.scss";
 
-type Product = {
-  category: string;
-  description: string;
-  id: number;
-  image: string;
-  price: number;
-  rating: {
-    rate: number;
-    count: number;
-  };
-  title: string;
-};
+const ProductsPage: React.FC = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-export const ProductsPage: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>();
+  const [selectedCategory, setSelectedCategory] = useState<
+    string | undefined
+  >();
+  const [inputValue, setInputValue] = useState("");
+
   const [selectedPage, setSelectedPage] = useState(1);
 
   useEffect(() => {
-    Promise.all([
-      axios.get(API_ROUTES.GET_PRODUCTS),
-      axios.get(API_ROUTES.GET_CATEGORIES),
-    ]).then(([products, categories]) => {
-      setProducts(products.data);
-      setCategories(categories.data);
-    });
-  }, []);
+    setInputValue(searchParams.get("search") || "");
+  }, [inputValue, navigate, searchParams]);
+
+  const productsStore = useLocalStore(() => new ProductsStore());
 
   useEffect(() => {
-    if (selectedCategory) {
-      axios
-        .get(API_ROUTES.GET_PRODUCT_FROM_CATEGORY(selectedCategory))
-        .then((result) => {
-          setProducts(result.data);
-        });
-    }
-  }, [selectedCategory]);
+    productsStore.getProductsList(selectedCategory);
+    productsStore.getCategoriesList();
+  }, [productsStore, selectedCategory]);
 
   const handleCategoryClick = useCallback((category: string | undefined) => {
     setSelectedCategory(category);
   }, []);
+
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputValue(e.target.value);
+      navigate({
+        pathname: "/",
+        search: createSearchParams({
+          search: e.target.value,
+        }).toString(),
+      });
+    },
+    [navigate]
+  );
 
   const handleNextProductLoad = useCallback(() => {
     setSelectedPage((prev) => ++prev);
@@ -73,41 +78,68 @@ export const ProductsPage: React.FC = () => {
         <Input
           className={styles.inputSearch}
           placeholder="SearchProperty"
-          onChange={() => {}}
+          onChange={handleInputChange}
+          value={inputValue}
         />
         <SingleDropdown
           className={styles.singleDropdown}
           onOptionClick={handleCategoryClick}
-          options={categories}
+          options={productsStore.categories}
         />
       </div>
       <div className={styles.subtitleWrapper}>
         <span className={styles.subtitle}>Total Product</span>
-        <span className={styles.badge}>{products.length}</span>
+        <span className={styles.badge}>
+          {
+            productsStore.products.filter(
+              (el) =>
+                el.title.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+            ).length
+          }
+        </span>
       </div>
-      <InfiniteScroll
-        dataLength={products.length}
-        next={handleNextProductLoad}
-        hasMore={true}
-        loader={<div>Loading...</div>}
-        className={styles.productWrapper}
-      >
-        {products.slice(0, selectedPage * 6).map((product) => (
-          <Link
-            to={createProductPath(product.id)}
-            key={product.id}
-            className={styles.linkWrapper}
-          >
-            <Card
-              title={product.title}
-              category={product.category}
-              subtitle={product.description}
-              image={product.image}
-              content={<Price price={`$ ${product.price}`} />}
-            />
-          </Link>
-        ))}
-      </InfiniteScroll>
+
+      {productsStore.meta !== Meta.LOADING ? (
+        <div className={styles.productWrapper}>
+          {productsStore.products
+            .filter(
+              (el) =>
+                el.title.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+            )
+            .slice(0, selectedPage * 3)
+            .map((product) => (
+              <Link
+                to={createProductPath(product.id)}
+                key={product.id}
+                className={styles.linkWrapper}
+              >
+                <Card
+                  title={product.title}
+                  category={product.category}
+                  subtitle={product.description}
+                  image={product.image}
+                  content={<Price price={`$ ${product.price}`} />}
+                />
+              </Link>
+            ))}
+          {productsStore.products.filter(
+            (el) =>
+              el.title.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+          ).length >
+            selectedPage * 3 && (
+            <Button
+              className={styles.showMoreButton}
+              onClick={handleNextProductLoad}
+            >
+              Показать еще
+            </Button>
+          )}
+        </div>
+      ) : (
+        <Loader size={LoaderSize.m} />
+      )}
     </div>
   );
 };
+
+export default observer(ProductsPage);
