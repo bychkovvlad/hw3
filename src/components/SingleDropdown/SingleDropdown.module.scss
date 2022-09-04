@@ -14,6 +14,8 @@
     width: 190px;
     margin-top: 10px;
     color: $base-black;
+    z-index: 100;
+    background-color: $base-white;
 }
 
 .dropdown_wrapper {
@@ -41,4 +43,5 @@
     text-align: center;
     margin-top: 20px;
     margin-bottom: 20px;
+    z-index: 5;
 }

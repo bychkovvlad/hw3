@@ -1,51 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { Button, ButtonColor } from "@components/Button";
-import { API_ROUTES } from "@config/apiRoutes";
-import axios from "axios";
+import { Loader } from "@components/Loader";
+import { ProductStore } from "@stores/ProductStore";
+import { Meta } from "@utils/meta";
+import { observer, useLocalStore } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 
 import styles from "./ProductPage.module.scss";
 
-type Product = {
-  category: string;
-  description: string;
-  id: number;
-  image: string;
-  price: number;
-  rating: {
-    rate: number;
-    count: number;
-  };
-  title: string;
-};
-
-export const ProductPage: React.FC = () => {
-  const [product, setProduct] = useState<Product>();
+const ProductPage: React.FC = () => {
   const params = useParams();
+  const productStore = useLocalStore(() => new ProductStore());
 
   useEffect(() => {
-    axios.get(API_ROUTES.GET_PRODUCT(params.id)).then((result) => {
-      setProduct(result.data);
-    });
-  }, [params.id]);
+    productStore.getProduct(params.id);
+  }, [productStore, params.id]);
+
+  if (productStore.meta === Meta.LOADING) {
+    return <Loader />;
+  }
 
   return (
     <div>
       <div className={styles.wrapper}>
         <img
           className={styles.image}
-          src={product?.image}
-          alt={product?.title}
+          src={productStore.product.image}
+          alt={productStore.product.title}
         />
         <div>
-          <div className={styles.title}>{product?.title}</div>
-          <div className={styles.category}>{product?.category}</div>
+          <div className={styles.title}>{productStore.product.title}</div>
+          <div className={styles.category}>{productStore.product.category}</div>
           <div className={styles.rating}>
-            <div>Rate {product?.rating.rate}</div>
+            <div>Rate {productStore.product.rating?.rate}</div>
           </div>
-          <div className={styles.description}>{product?.description}</div>
-          <div className={styles.price}>${product?.price}</div>
+          <div className={styles.description}>
+            {productStore.product.description}
+          </div>
+          <div className={styles.price}>${productStore.product.price}</div>
           <div className={styles.buttonsWrapper}>
             <Button className={styles.buyButton}>Buy Now</Button>
             <Button
@@ -60,3 +53,5 @@ export const ProductPage: React.FC = () => {
     </div>
   );
 };
+
+export default observer(ProductPage);
