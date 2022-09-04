@@ -1,6 +1,10 @@
+import { createProductPath } from "@config/routes";
+import { Link } from "react-router-dom";
+
 import styles from "./Card.module.scss";
 
 type CardProps = {
+  id: number;
   category?: string;
   image: string;
   title: string;
@@ -10,6 +14,7 @@ type CardProps = {
 };
 
 export const Card: React.FC<CardProps> = ({
+  id,
   image,
   title,
   subtitle,
@@ -18,14 +23,16 @@ export const Card: React.FC<CardProps> = ({
   category,
 }) => {
   return (
-    <div className={styles.card_block} onClick={onClick}>
-      <div>
-        <img src={image} className={styles.card_image} alt={title} />
+    <Link to={createProductPath(id)} key={id} className={styles.linkWrapper}>
+      <div className={styles.card_block} onClick={onClick}>
+        <div>
+          <img src={image} className={styles.card_image} alt={title} />
+        </div>
+        <div className={styles.category}>{category}</div>
+        <div className={styles.card_title}>{title}</div>
+        <div className={styles.card_subtitle}>{subtitle}</div>
+        <div className={styles.card_content}>{content}</div>
       </div>
-      <div className={styles.category}>{category}</div>
-      <div className={styles.card_title}>{title}</div>
-      <div className={styles.card_subtitle}>{subtitle}</div>
-      <div className={styles.card_content}>{content}</div>
-    </div>
+    </Link>
   );
 };

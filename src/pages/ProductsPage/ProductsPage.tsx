@@ -7,13 +7,10 @@ import { Loader } from "@components/Loader";
 import { LoaderSize } from "@components/Loader/Loader";
 import { Price } from "@components/Price";
 import { SingleDropdown } from "@components/SingleDropdown";
-import { createProductPath } from "@config/routes";
 import { ProductsStore } from "@stores/ProductsStore";
 import { Meta } from "@utils/meta";
 import { observer, useLocalStore } from "mobx-react-lite";
-// import InfiniteScroll from "react-infinite-scroll-component";
 import {
-  Link,
   useNavigate,
   createSearchParams,
   useSearchParams,
@@ -28,28 +25,24 @@ const ProductsPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<
     string | undefined
   >();
-  const [inputValue, setInputValue] = useState("");
-
-  const [selectedPage, setSelectedPage] = useState(1);
-
-  useEffect(() => {
-    setInputValue(searchParams.get("search") || "");
-  }, [inputValue, navigate, searchParams]);
 
   const productsStore = useLocalStore(() => new ProductsStore());
 
   useEffect(() => {
+    productsStore.setInputValue(searchParams.get("search") || "");
+  }, [searchParams, productsStore]);
+
+  useEffect(() => {
     productsStore.getProductsList(selectedCategory);
-    productsStore.getCategoriesList();
   }, [productsStore, selectedCategory]);
 
-  const handleCategoryClick = useCallback((category: string | undefined) => {
-    setSelectedCategory(category);
-  }, []);
+  useEffect(() => {
+    productsStore.getCategoriesList();
+  }, [productsStore]);
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setInputValue(e.target.value);
+      productsStore.setInputValue(e.target.value);
       navigate({
         pathname: "/",
         search: createSearchParams({
@@ -57,12 +50,8 @@ const ProductsPage: React.FC = () => {
         }).toString(),
       });
     },
-    [navigate]
+    [navigate, productsStore]
   );
-
-  const handleNextProductLoad = useCallback(() => {
-    setSelectedPage((prev) => ++prev);
-  }, []);
 
   return (
     <div>
@@ -79,57 +68,41 @@ const ProductsPage: React.FC = () => {
           className={styles.inputSearch}
           placeholder="SearchProperty"
           onChange={handleInputChange}
-          value={inputValue}
+          value={productsStore.inputValue}
         />
         <SingleDropdown
           className={styles.singleDropdown}
-          onOptionClick={handleCategoryClick}
+          onOptionClick={setSelectedCategory}
           options={productsStore.categories}
         />
       </div>
       <div className={styles.subtitleWrapper}>
         <span className={styles.subtitle}>Total Product</span>
         <span className={styles.badge}>
-          {
-            productsStore.products.filter(
-              (el) =>
-                el.title.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
-            ).length
-          }
+          {productsStore.searchProducts.length}
         </span>
       </div>
 
       {productsStore.meta !== Meta.LOADING ? (
         <div className={styles.productWrapper}>
-          {productsStore.products
-            .filter(
-              (el) =>
-                el.title.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
-            )
-            .slice(0, selectedPage * 3)
+          {productsStore.searchProducts
+            .slice(0, productsStore.selectedPage * 3)
             .map((product) => (
-              <Link
-                to={createProductPath(product.id)}
+              <Card
                 key={product.id}
-                className={styles.linkWrapper}
-              >
-                <Card
-                  title={product.title}
-                  category={product.category}
-                  subtitle={product.description}
-                  image={product.image}
-                  content={<Price price={`$ ${product.price}`} />}
-                />
-              </Link>
+                id={product.id}
+                title={product.title}
+                category={product.category}
+                subtitle={product.description}
+                image={product.image}
+                content={<Price price={`$ ${product.price}`} />}
+              />
             ))}
-          {productsStore.products.filter(
-            (el) =>
-              el.title.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
-          ).length >
-            selectedPage * 3 && (
+          {productsStore.searchProducts.length >
+            productsStore.selectedPage * 3 && (
             <Button
               className={styles.showMoreButton}
-              onClick={handleNextProductLoad}
+              onClick={() => productsStore.nextPage()}
             >
               Показать еще
             </Button>

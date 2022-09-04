@@ -26,21 +26,19 @@ const ProductPage: React.FC = () => {
       <div className={styles.wrapper}>
         <img
           className={styles.image}
-          src={productStore.product?.image}
-          alt={productStore.product?.title}
+          src={productStore.product.image}
+          alt={productStore.product.title}
         />
         <div>
-          <div className={styles.title}>{productStore.product?.title}</div>
-          <div className={styles.category}>
-            {productStore.product?.category}
-          </div>
+          <div className={styles.title}>{productStore.product.title}</div>
+          <div className={styles.category}>{productStore.product.category}</div>
           <div className={styles.rating}>
-            <div>Rate {productStore.product?.rating?.rate}</div>
+            <div>Rate {productStore.product.rating?.rate}</div>
           </div>
           <div className={styles.description}>
-            {productStore.product?.description}
+            {productStore.product.description}
           </div>
-          <div className={styles.price}>${productStore.product?.price}</div>
+          <div className={styles.price}>${productStore.product.price}</div>
           <div className={styles.buttonsWrapper}>
             <Button className={styles.buyButton}>Buy Now</Button>
             <Button

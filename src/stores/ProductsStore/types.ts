@@ -14,4 +14,5 @@ export type Products = {
 export interface IProductsStore {
   getProductsList(selectedCategory: string): Promise<void>;
   getCategoriesList(): Promise<void>;
+  nextPage(): number;
 }
